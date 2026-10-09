@@ -1,0 +1,92 @@
+const en = {
+  meta: {
+    title: "Eclipse Tunisia: total solar eclipse tours, 2 August 2027",
+    description:
+      "Small-group tours to see the 2 August 2027 total solar eclipse from Sfax and the Kerkennah Islands, with more than five and a half minutes of totality.",
+  },
+  nav: { tours: "Tours", why: "Why Sfax", how: "Booking", contact: "Contact", language: "Language" },
+  hero: {
+    title: "Stand in the Moon’s shadow over Sfax",
+    body: "On the morning of 2 August 2027 the sky above Sfax goes dark for about five minutes and forty seconds. We take small groups to the centre line and look after everything around it.",
+    cta: "See the tours",
+    scrollHint: "Scroll to bring on totality",
+    countdownLabel: "Until totality in Sfax",
+    days: "days",
+    hours: "hours",
+    minutes: "min",
+    totalityNow: "Totality",
+  },
+  facts: {
+    title: "The eclipse from Sfax",
+    date: "Date",
+    dateValue: "Monday 2 August 2027",
+    time: "Mid-totality",
+    timeValue: "About 10:10 local time",
+    duration: "Totality in Sfax",
+    durationValue: "About 5 min 40 s",
+    altitude: "Sun height",
+    altitudeValue: "About 56° above the horizon",
+    note: "Times are approximate. We confirm exact contact times for each viewing site in your travel pack.",
+  },
+  why: {
+    title: "Why Sfax",
+    body1:
+      "The path of totality crosses the Tunisian coast at Sfax and the Kerkennah Islands. The Sun stands high in a mid-morning sky, well clear of haze on the horizon.",
+    body2:
+      "Tunis sees a 97% partial eclipse, which is not the same thing. Only inside the path does the sky turn dark, the corona appear and the temperature drop. Our viewing sites sit near the centre line.",
+  },
+  tours: {
+    title: "Eclipse tours",
+    intro: "Every tour includes certified eclipse glasses, a briefing the evening before, and a reserved viewing site in the path of totality.",
+    from: "From",
+    perPerson: "per person",
+    days: "days",
+    spotsLeft: "{n} places left",
+    soldOut: "Fully booked",
+    view: "View tour",
+    empty: "New tours are being prepared. Write to us and we will tell you first.",
+    viewingSite: "Viewing site",
+    totality: "Totality",
+    departure: "Starts",
+  },
+  how: {
+    title: "How booking works",
+    steps: [
+      { title: "Send a request", body: "Choose a tour and tell us who is travelling. It is free and does not commit you." },
+      { title: "We confirm", body: "Within two working days we confirm your places and send the full itinerary and payment details." },
+      { title: "Secure your places", body: "A deposit holds your places. The balance is due 60 days before departure." },
+    ],
+  },
+  tour: {
+    back: "All tours",
+    itinerary: "Day by day",
+    day: "Day {n}",
+    included: "Included",
+    faq: "Questions",
+    book: "Request this tour",
+    bookIntro: "No payment now. We reply within two working days.",
+    name: "Full name",
+    email: "Email",
+    phone: "Phone (optional)",
+    country: "Country of residence",
+    travelers: "Number of travellers",
+    message: "Anything else we should know?",
+    submit: "Send booking request",
+    required: "required",
+    yes: "Yes",
+    no: "No",
+    choose: "Choose…",
+    successTitle: "Request received",
+    successBody: "Thank you. We have your request and will reply to {email} within two working days.",
+    errorRequired: "Please fill in your name, a valid email and the required questions.",
+    errorFull: "There are not enough places left for this group size. Write to us and we will look for a solution.",
+  },
+  footer: {
+    tagline: "Total solar eclipse tours in Tunisia, 2 August 2027.",
+    safety: "Never look at the partial phases of an eclipse without certified ISO 12312-2 eclipse glasses.",
+    rights: "All rights reserved.",
+  },
+};
+
+export default en;
+export type Dictionary = typeof en;

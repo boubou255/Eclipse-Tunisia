@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Tour {
+  id            String            @id @default(cuid())
+  slug          String            @unique
+  priceEur      Int
+  durationDays  Int
+  startDate     DateTime
+  capacity      Int
+  imageUrl      String?
+  viewingSite   String
+  totality      String
+  published     Boolean           @default(false)
+  sortOrder     Int               @default(0)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  translations  TourTranslation[]
+  questions     TourQuestion[]
+  bookings      Booking[]
+}
+
+/// Content for one language. English is the fallback for missing languages.
+model TourTranslation {
+  id          String @id @default(cuid())
+  tourId      String
+  locale      String
+  title       String
+  summary     String
+  description String
+  /// One day per block, separated by a blank line. First line is the day title.
+  itinerary   String @default("")
+  /// One item per line.
+  included    String @default("")
+  tour        Tour   @relation(fields: [tourId], references: [id], onDelete: Cascade)
+
+  @@unique([tourId, locale])
+}
+
+/// kind "faq": shown on the tour page with its answer.
+/// kind "booking": asked in the booking form; the traveller's answer is saved with the booking.
+model TourQuestion {
+  id           String                    @id @default(cuid())
+  tourId       String
+  kind         String                    @default("faq")
+  inputType    String                    @default("text")
+  required     Boolean                   @default(false)
+  sortOrder    Int                       @default(0)
+  tour         Tour                      @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  translations TourQuestionTranslation[]
+}
+
+model TourQuestionTranslation {
+  id         String       @id @default(cuid())
+  questionId String
+  locale     String
+  question   String
+  /// FAQ answer, or comma-separated options for a booking "select" question.
+  answer     String       @default("")
+  q          TourQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, locale])
+}
+
+model Booking {
+  id         String   @id @default(cuid())
+  tourId     String
+  name       String
+  email      String
+  phone      String   @default("")
+  country    String   @default("")
+  travelers  Int      @default(1)
+  message    String   @default("")
+  /// JSON array of { question, answer } captured at booking time.
+  answers    String   @default("[]")
+  locale     String   @default("en")
+  status     String   @default("new")
+  createdAt  DateTime @default(now())
+  tour       Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+}

@@ -1,0 +1,93 @@
+import type { Dictionary } from "./en";
+
+const zh: Dictionary = {
+  meta: {
+    title: "Eclipse Tunisia｜2027年8月2日日全食之旅",
+    description:
+      "小团出行，在斯法克斯和克肯纳群岛观看2027年8月2日的日全食，全食时间超过五分半钟。",
+  },
+  nav: { tours: "行程", why: "为什么是斯法克斯", how: "预订", contact: "联系我们", language: "语言" },
+  hero: {
+    title: "站在斯法克斯上空的月影之中",
+    body: "2027年8月2日上午，斯法克斯的天空将暗下约五分四十秒。我们带小团前往中心线附近，并安排好其余的一切。",
+    cta: "查看行程",
+    scrollHint: "向下滚动，迎来全食",
+    countdownLabel: "距斯法克斯全食",
+    days: "天",
+    hours: "小时",
+    minutes: "分",
+    totalityNow: "全食",
+  },
+  facts: {
+    title: "在斯法克斯看日食",
+    date: "日期",
+    dateValue: "2027年8月2日（星期一）",
+    time: "全食中点",
+    timeValue: "当地时间约 10:10",
+    duration: "斯法克斯全食时长",
+    durationValue: "约5分40秒",
+    altitude: "太阳高度",
+    altitudeValue: "地平线以上约56°",
+    note: "时间为近似值。我们会在行程资料中确认每个观测点的准确接触时刻。",
+  },
+  why: {
+    title: "为什么是斯法克斯",
+    body1:
+      "全食带在斯法克斯和克肯纳群岛穿过突尼斯海岸。太阳高挂在上午的天空中，远离地平线附近的雾霾。",
+    body2:
+      "首都突尼斯只能看到97%的偏食，那是完全不同的体验。只有在全食带内，天空才会变暗、日冕才会出现、气温才会下降。我们的观测点都靠近中心线。",
+  },
+  tours: {
+    title: "日食行程",
+    intro: "每条行程都包含认证日食眼镜、前一晚的讲解，以及全食带内预留的观测点。",
+    from: "起价",
+    perPerson: "每人",
+    days: "天",
+    spotsLeft: "剩余{n}个名额",
+    soldOut: "已满",
+    view: "查看行程",
+    empty: "新行程正在准备中。给我们留言，我们会第一时间通知您。",
+    viewingSite: "观测点",
+    totality: "全食",
+    departure: "出发",
+  },
+  how: {
+    title: "预订流程",
+    steps: [
+      { title: "提交申请", body: "选择行程并告诉我们出行人员。免费且无任何义务。" },
+      { title: "我们确认", body: "两个工作日内，我们确认名额并发送完整行程和付款信息。" },
+      { title: "锁定名额", body: "支付定金即可锁定名额，余款在出发前60天付清。" },
+    ],
+  },
+  tour: {
+    back: "全部行程",
+    itinerary: "每日行程",
+    day: "第{n}天",
+    included: "费用包含",
+    faq: "常见问题",
+    book: "申请此行程",
+    bookIntro: "现在无需付款。我们会在两个工作日内回复。",
+    name: "姓名",
+    email: "电子邮件",
+    phone: "电话（可选）",
+    country: "居住国家",
+    travelers: "出行人数",
+    message: "还有什么需要我们了解的吗？",
+    submit: "提交预订申请",
+    required: "必填",
+    yes: "是",
+    no: "否",
+    choose: "请选择",
+    successTitle: "申请已收到",
+    successBody: "谢谢。我们已收到您的申请，将在两个工作日内回复至 {email}。",
+    errorRequired: "请填写姓名、有效的电子邮件以及必答问题。",
+    errorFull: "剩余名额不足以容纳此人数。请联系我们，我们会想办法。",
+  },
+  footer: {
+    tagline: "突尼斯日全食之旅，2027年8月2日。",
+    safety: "未佩戴符合 ISO 12312-2 标准的日食眼镜时，切勿直视日食的偏食阶段。",
+    rights: "版权所有。",
+  },
+};
+
+export default zh;

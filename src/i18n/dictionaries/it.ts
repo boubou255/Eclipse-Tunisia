@@ -1,0 +1,93 @@
+import type { Dictionary } from "./en";
+
+const it: Dictionary = {
+  meta: {
+    title: "Eclipse Tunisia: viaggi per l’eclissi totale del 2 agosto 2027",
+    description:
+      "Viaggi in piccoli gruppi per vedere l’eclissi totale di Sole del 2 agosto 2027 da Sfax e dalle isole Kerkennah, con oltre cinque minuti e mezzo di totalità.",
+  },
+  nav: { tours: "Viaggi", why: "Perché Sfax", how: "Prenotazione", contact: "Contatti", language: "Lingua" },
+  hero: {
+    title: "Stare nell’ombra della Luna sopra Sfax",
+    body: "La mattina del 2 agosto 2027 il cielo di Sfax si oscura per circa cinque minuti e quaranta secondi. Portiamo piccoli gruppi sulla linea centrale e ci occupiamo di tutto il resto.",
+    cta: "Vedi i viaggi",
+    scrollHint: "Scorri per far arrivare la totalità",
+    countdownLabel: "Alla totalità a Sfax",
+    days: "giorni",
+    hours: "ore",
+    minutes: "min",
+    totalityNow: "Totalità",
+  },
+  facts: {
+    title: "L’eclissi da Sfax",
+    date: "Data",
+    dateValue: "Lunedì 2 agosto 2027",
+    time: "Metà della totalità",
+    timeValue: "Verso le 10:10 ora locale",
+    duration: "Totalità a Sfax",
+    durationValue: "Circa 5 min 40 s",
+    altitude: "Altezza del Sole",
+    altitudeValue: "Circa 56° sopra l’orizzonte",
+    note: "Orari indicativi. Gli orari esatti per ogni punto di osservazione sono nei documenti di viaggio.",
+  },
+  why: {
+    title: "Perché Sfax",
+    body1:
+      "La fascia di totalità attraversa la costa tunisina a Sfax e alle isole Kerkennah. Il Sole è alto nel cielo di metà mattina, lontano dalla foschia dell’orizzonte.",
+    body2:
+      "Tunisi vedrà un’eclissi parziale al 97%, che è tutt’altra cosa. Solo nella fascia di totalità il cielo si fa buio, appare la corona e la temperatura scende. I nostri punti di osservazione sono vicini alla linea centrale.",
+  },
+  tours: {
+    title: "Viaggi per l’eclissi",
+    intro: "Ogni viaggio include occhiali per eclissi certificati, un briefing la sera prima e un punto di osservazione riservato nella fascia di totalità.",
+    from: "Da",
+    perPerson: "a persona",
+    days: "giorni",
+    spotsLeft: "{n} posti rimasti",
+    soldOut: "Esaurito",
+    view: "Vedi il viaggio",
+    empty: "Stiamo preparando nuovi viaggi. Scrivici e sarai il primo a saperlo.",
+    viewingSite: "Punto di osservazione",
+    totality: "Totalità",
+    departure: "Inizio",
+  },
+  how: {
+    title: "Come si prenota",
+    steps: [
+      { title: "Invia una richiesta", body: "Scegli un viaggio e dicci chi viaggia. È gratuito e senza impegno." },
+      { title: "Confermiamo", body: "Entro due giorni lavorativi confermiamo i posti e inviamo l’itinerario completo e i dati per il pagamento." },
+      { title: "Blocca i posti", body: "Un acconto garantisce i posti. Il saldo è dovuto 60 giorni prima della partenza." },
+    ],
+  },
+  tour: {
+    back: "Tutti i viaggi",
+    itinerary: "Giorno per giorno",
+    day: "Giorno {n}",
+    included: "Incluso",
+    faq: "Domande",
+    book: "Richiedi questo viaggio",
+    bookIntro: "Nessun pagamento ora. Rispondiamo entro due giorni lavorativi.",
+    name: "Nome e cognome",
+    email: "E-mail",
+    phone: "Telefono (facoltativo)",
+    country: "Paese di residenza",
+    travelers: "Numero di viaggiatori",
+    message: "C’è altro che dovremmo sapere?",
+    submit: "Invia la richiesta",
+    required: "obbligatorio",
+    yes: "Sì",
+    no: "No",
+    choose: "Scegli…",
+    successTitle: "Richiesta ricevuta",
+    successBody: "Grazie. Abbiamo ricevuto la tua richiesta e risponderemo a {email} entro due giorni lavorativi.",
+    errorRequired: "Inserisci nome, un’e-mail valida e le risposte obbligatorie.",
+    errorFull: "Non ci sono abbastanza posti per questo gruppo. Scrivici e cercheremo una soluzione.",
+  },
+  footer: {
+    tagline: "Viaggi per l’eclissi totale di Sole in Tunisia, 2 agosto 2027.",
+    safety: "Non guardare mai le fasi parziali di un’eclissi senza occhiali certificati ISO 12312-2.",
+    rights: "Tutti i diritti riservati.",
+  },
+};
+
+export default it;
