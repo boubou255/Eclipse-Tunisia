@@ -1,0 +1,32 @@
+{
+  "type": "FeatureCollection",
+  "_comment": "PLACEHOLDER ONLY - NOT ACCURATE. This hand-drawn band is a rough visual approximation of the 2 Aug 2027 path of totality across Tunisia. It MUST be replaced with official NASA path data (northern limit / southern limit polygon, e.g. from NASA GSFC eclipse.gsfc.nasa.gov or Xavier Jubier's KMZ converted to GeoJSON) before going live. Do not present this outline as accurate to customers.",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Path of totality – PLACEHOLDER (replace with official NASA data)",
+        "placeholder": true,
+        "source": "Hand-drawn approximation, not from NASA"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [7.0, 36.30],
+            [8.5, 36.03],
+            [10.0, 35.73],
+            [11.0, 35.55],
+            [12.2, 35.30],
+            [12.2, 33.17],
+            [11.0, 33.38],
+            [10.0, 33.56],
+            [8.5, 33.84],
+            [7.0, 34.10],
+            [7.0, 36.30]
+          ]
+        ]
+      }
+    }
+  ]
+}
