@@ -23,6 +23,26 @@ npm run dev
   - *FAQ*: a question and answer shown on the tour page.
   - *Booking form*: asked when someone books. The format can be short text, long text, a list of choices or yes/no, and it can be required. Answers are saved with the booking.
 - **Bookings**: see every request, filter by status or tour, and confirm or cancel. Cancelled requests free their places. Places left are shown live on the website.
+- **Payments**: each booking shows its plan, what was paid and what is still owed, every Konnect payment with its status, a button to re-check the status with Konnect, and a button to create a payment link for the balance.
+
+## Online payment with Konnect
+
+Travellers can pay a **30% deposit** or **100%** when they book, by bank card, e-DINAR or Konnect wallet.
+
+1. Open `.env` and fill in the Konnect section (copied from `.env.example`):
+   `KONNECT_API_KEY`, `KONNECT_WALLET_ID`, `KONNECT_MODE`, `KONNECT_CURRENCY`, `EUR_TO_TND_RATE`, `DEPOSIT_PERCENT`, `SITE_URL`.
+2. Restart the site. The booking form now shows the payment choice. With either key empty, the form stays a free booking request.
+3. Test with `KONNECT_MODE="sandbox"` first, then switch to `"production"`.
+
+How it works:
+
+- The booking is saved, a Konnect checkout is created (`POST /payments/init-payment`) and the traveller is sent to Konnect.
+- Konnect sends them back to `/{lang}/tours/{tour}/payment` and calls `SITE_URL/api/konnect/webhook`. In both cases the site asks Konnect for the real status (`GET /payments/{ref}`) instead of trusting the request.
+- A completed payment marks the booking as confirmed and records the amount paid.
+- Unpaid online bookings hold their places for 35 minutes; after that the places go back on sale. The traveller can retry from the payment page.
+- For deposit bookings, open the booking in the admin and click **Create link for the balance** to get a Konnect link for the remaining 70%.
+
+Prices stay in euros on the site. With `KONNECT_CURRENCY="TND"` the amount is converted with `EUR_TO_TND_RATE` and sent in millimes; with EUR or USD it is sent in cents. Check with Konnect which currencies your wallet accepts.
 
 ## Languages
 

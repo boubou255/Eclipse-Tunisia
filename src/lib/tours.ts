@@ -8,11 +8,29 @@ export function pick<T extends WithLocale>(rows: T[], locale: Locale): T | undef
   return rows.find((r) => r.locale === locale) ?? rows.find((r) => r.locale === defaultLocale) ?? rows[0];
 }
 
-/** Places still free: capacity minus travellers on bookings that are not cancelled. */
+/**
+ * Bookings that take up places: anything not cancelled, except online-payment bookings
+ * that were never paid. Those hold their places for 35 minutes after the latest checkout
+ * was opened (a Konnect checkout lasts 30).
+ */
+export function holdsPlaces() {
+  const since = new Date(Date.now() - 35 * 60_000);
+  return {
+    status: { not: "cancelled" },
+    OR: [
+      { payPlan: "none" },
+      { paidEur: { gt: 0 } },
+      { createdAt: { gt: since } },
+      { payments: { some: { createdAt: { gt: since } } } },
+    ],
+  };
+}
+
+/** Places still free: capacity minus travellers on bookings that hold places. */
 async function bookedCounts() {
   const rows = await db.booking.groupBy({
     by: ["tourId"],
-    where: { status: { not: "cancelled" } },
+    where: holdsPlaces(),
     _sum: { travelers: true },
   });
   return new Map(rows.map((r) => [r.tourId, r._sum.travelers ?? 0]));
@@ -69,7 +87,7 @@ export async function getPublishedTour(slug: string, locale: Locale) {
   if (!tour) return null;
 
   const booked = await db.booking.aggregate({
-    where: { tourId: tour.id, status: { not: "cancelled" } },
+    where: { tourId: tour.id, ...holdsPlaces() },
     _sum: { travelers: true },
   });
   const tr = pick(tour.translations, locale);

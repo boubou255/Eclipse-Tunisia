@@ -6,6 +6,7 @@ import { fill, getDictionary } from "@/i18n";
 import { getPublishedTour } from "@/lib/tours";
 import { formatDate, formatPrice } from "@/lib/format";
 import BookingForm from "@/components/BookingForm";
+import { paymentSettings, paymentsEnabled } from "@/lib/konnect";
 
 export const dynamic = "force-dynamic";
 
@@ -113,8 +114,16 @@ export default async function TourPage({ params, searchParams }: { params: Param
             </div>
           ) : tour.spotsLeft > 0 ? (
             <>
-              <p className="muted">{t.tour.bookIntro}</p>
-              <BookingForm t={t.tour} locale={locale} slug={tour.slug} maxTravelers={tour.spotsLeft} questions={tour.bookingQuestions} />
+              {!paymentsEnabled() && <p className="muted">{t.tour.bookIntro}</p>}
+              <BookingForm
+                t={t.tour}
+                tp={t.pay}
+                locale={locale}
+                slug={tour.slug}
+                maxTravelers={tour.spotsLeft}
+                questions={tour.bookingQuestions}
+                payment={paymentsEnabled() ? { ...paymentSettings(), priceEur: tour.priceEur } : null}
+              />
             </>
           ) : (
             <p>{t.tour.errorFull}</p>

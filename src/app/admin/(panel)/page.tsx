@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { pick } from "@/lib/tours";
+import { holdsPlaces, pick } from "@/lib/tours";
 import { dateTime, euros, statusLabels } from "@/lib/admin-format";
 
 export const dynamic = "force-dynamic";
 
 export default async function Overview() {
   const [tours, recent, newCount, totals] = await Promise.all([
-    db.tour.findMany({ orderBy: [{ sortOrder: "asc" }, { startDate: "asc" }], include: { translations: true, bookings: { where: { status: { not: "cancelled" } }, select: { travelers: true, status: true } } } }),
+    db.tour.findMany({ orderBy: [{ sortOrder: "asc" }, { startDate: "asc" }], include: { translations: true, bookings: { where: holdsPlaces(), select: { travelers: true, status: true, paidEur: true } } } }),
     db.booking.findMany({ orderBy: { createdAt: "desc" }, take: 8, include: { tour: { include: { translations: true } } } }),
     db.booking.count({ where: { status: "new" } }),
     db.booking.aggregate({ where: { status: "confirmed" }, _sum: { travelers: true } }),
@@ -17,6 +17,7 @@ export default async function Overview() {
     (sum, t) => sum + t.bookings.filter((b) => b.status === "confirmed").reduce((s, b) => s + b.travelers * t.priceEur, 0),
     0,
   );
+  const received = tours.reduce((sum, t) => sum + t.bookings.reduce((s, b) => s + b.paidEur, 0), 0);
 
   return (
     <>
@@ -39,8 +40,8 @@ export default async function Overview() {
           <dd>{euros(confirmedRevenue)}</dd>
         </div>
         <div>
-          <dt>Published tours</dt>
-          <dd>{tours.filter((t) => t.published).length}</dd>
+          <dt>Paid online</dt>
+          <dd>{euros(received)}</dd>
         </div>
       </dl>
 
@@ -77,7 +78,7 @@ export default async function Overview() {
             })}
           </tbody>
         </table>
-        <p className="hint">Booked counts every request that is not cancelled.</p>
+        <p className="hint">Booked counts every request that is not cancelled. Unpaid online bookings hold their places for 35 minutes.</p>
       </section>
 
       <section className="block">

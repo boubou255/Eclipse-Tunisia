@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { pick } from "@/lib/tours";
-import { dateTime, statusLabels } from "@/lib/admin-format";
-import { localeNames, isLocale } from "@/i18n/config";
+import { dateTime, euros, statusLabels } from "@/lib/admin-format";
 
 export const dynamic = "force-dynamic";
 
@@ -67,7 +66,7 @@ export default async function Bookings({ searchParams }: { searchParams: Promise
               <th>Email</th>
               <th>Tour</th>
               <th className="num">Travellers</th>
-              <th>Language</th>
+              <th className="num">Paid</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -79,7 +78,7 @@ export default async function Bookings({ searchParams }: { searchParams: Promise
                 <td><a href={`mailto:${b.email}`}>{b.email}</a></td>
                 <td>{pick(b.tour.translations, "en")?.title}</td>
                 <td className="num">{b.travelers}</td>
-                <td>{isLocale(b.locale) ? localeNames[b.locale] : b.locale}</td>
+                <td className="num">{b.paidEur ? euros(b.paidEur) : "–"}</td>
                 <td><span className={`status status-${b.status}`}>{statusLabels[b.status] ?? b.status}</span></td>
               </tr>
             ))}

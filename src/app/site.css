@@ -1066,3 +1066,86 @@ p {
     position: static;
   }
 }
+
+/* Payment choice in the booking form */
+.booking-form .pay-plan {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rule);
+}
+.booking-form .pay-plan legend {
+  font-weight: 600;
+  font-size: 1rem;
+  padding-top: 1rem;
+}
+.pay-total {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.booking-form .pay-option {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+.booking-form .pay-option:has(input:checked) {
+  border-color: var(--olive);
+  box-shadow: 0 0 0 1px var(--olive);
+}
+.pay-option input {
+  margin-top: 0.3rem;
+  accent-color: var(--olive);
+}
+.pay-option span {
+  display: grid;
+  gap: 0.1rem;
+}
+.pay-option small {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+}
+.pay-small {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* Payment result page */
+.payment-page {
+  padding-block: 3rem 6rem;
+  max-width: 40rem;
+  display: grid;
+  gap: 1rem;
+}
+.payment-page .back {
+  justify-self: start;
+}
+.pay-result {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 2rem;
+  display: grid;
+  gap: 0.75rem;
+}
+.pay-result h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.05;
+}
+.pay-result p {
+  margin: 0;
+}
+.pay-result form {
+  margin-top: 0.5rem;
+}
+.pay-ok {
+  border-color: var(--olive);
+}
+.pay-failed {
+  border-color: var(--prominence);
+}

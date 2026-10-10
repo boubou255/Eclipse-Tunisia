@@ -81,6 +81,35 @@ model Booking {
   answers    String   @default("[]")
   locale     String   @default("en")
   status     String   @default("new")
+  /// "none" (request only), "deposit" or "full"
+  payPlan       String    @default("none")
+  /// Tour price x travellers at booking time, in euros.
+  totalEur      Int       @default(0)
+  /// Sum of completed payments, in euros.
+  paidEur       Int       @default(0)
+  /// "unpaid", "pending", "deposit_paid", "paid"
+  paymentStatus String    @default("unpaid")
   createdAt  DateTime @default(now())
   tour       Tour     @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  payments   Payment[]
+}
+
+/// One Konnect checkout. A booking can have several (a failed try, then a retry; a deposit, then the balance).
+model Payment {
+  id         String   @id @default(cuid())
+  bookingId  String
+  /// Konnect paymentRef
+  ref        String   @unique
+  /// "deposit", "full" or "balance"
+  kind       String
+  amountEur  Int
+  /// What Konnect charges: currency token and amount in its smallest unit (millimes for TND, cents for EUR/USD).
+  currency   String
+  amount     Int
+  payUrl     String
+  /// "pending", "completed", "failed"
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  booking    Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }

@@ -5,13 +5,21 @@ import { pick } from "@/lib/tours";
 import { dateTime, euros, shortDate, statusLabels } from "@/lib/admin-format";
 import { localeNames, isLocale } from "@/i18n/config";
 import ConfirmButton from "@/components/admin/ConfirmButton";
-import { deleteBooking, setStatus } from "../actions";
+import { deleteBooking, refreshPayments, setStatus } from "../actions";
+import BalanceLink from "@/components/admin/BalanceLink";
+import { paymentsEnabled } from "@/lib/konnect";
 
 export const dynamic = "force-dynamic";
 
+const planLabels: Record<string, string> = { none: "Request only", deposit: "Deposit online", full: "Full payment online" };
+const kindLabels: Record<string, string> = { deposit: "Deposit", full: "Full payment", balance: "Balance" };
+
 export default async function BookingDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const b = await db.booking.findUnique({ where: { id }, include: { tour: { include: { translations: true } } } });
+  const b = await db.booking.findUnique({
+    where: { id },
+    include: { tour: { include: { translations: true } }, payments: { orderBy: { createdAt: "desc" } } },
+  });
   if (!b) notFound();
   let answers: { question: string; answer: string }[] = [];
   try {
@@ -78,6 +86,46 @@ export default async function BookingDetail({ params }: { params: Promise<{ id: 
               <dt>Country</dt>
               <dd>{b.country || <span className="muted">Not given</span>}</dd>
             </dl>
+          </section>
+
+          <section className="card">
+            <h2 className="card-title">Payment</h2>
+            <dl className="kv">
+              <dt>Plan</dt>
+              <dd>{planLabels[b.payPlan] ?? b.payPlan}</dd>
+              <dt>Total</dt>
+              <dd>{euros(b.totalEur || b.travelers * b.tour.priceEur)}</dd>
+              <dt>Paid</dt>
+              <dd>{euros(b.paidEur)}</dd>
+              <dt>Still owed</dt>
+              <dd><b>{euros(Math.max(0, (b.totalEur || b.travelers * b.tour.priceEur) - b.paidEur))}</b></dd>
+            </dl>
+            {b.payments.length > 0 && (
+              <ul className="paylist">
+                {b.payments.map((p) => (
+                  <li key={p.id}>
+                    <span>
+                      {kindLabels[p.kind] ?? p.kind}, {euros(p.amountEur)}
+                      <small className="muted">
+                        {" "}({(p.amount / (p.currency === "TND" ? 1000 : 100)).toLocaleString("en-GB")} {p.currency}), {dateTime(p.createdAt)}
+                      </small>
+                    </span>
+                    <span className={`status status-pay-${p.status}`}>{p.status === "completed" ? "Paid" : p.status === "failed" ? "Failed" : "Pending"}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <div className="stack-sm">
+              {b.payments.some((p) => p.status === "pending") && (
+                <form action={refreshPayments}>
+                  <input type="hidden" name="id" value={b.id} />
+                  <button className="btn btn-quiet">Check status with Konnect</button>
+                </form>
+              )}
+              {paymentsEnabled() && b.status !== "cancelled" && b.paidEur < (b.totalEur || b.travelers * b.tour.priceEur) && (
+                <BalanceLink id={b.id} label={b.paidEur > 0 ? "Create link for the balance" : "Create payment link"} />
+              )}
+            </div>
           </section>
 
           <section className="card">

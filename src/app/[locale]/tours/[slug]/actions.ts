@@ -3,9 +3,10 @@
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { isLocale } from "@/i18n/config";
-import { getPublishedTour } from "@/lib/tours";
+import { getPublishedTour, holdsPlaces } from "@/lib/tours";
+import { createPayment, paymentsEnabled } from "@/lib/konnect";
 
-export type BookingState = { error?: "required" | "full" };
+export type BookingState = { error?: "required" | "full" | "payment" };
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -31,8 +32,13 @@ export async function requestBooking(_prev: BookingState, form: FormData): Promi
   }
   if (travelers > tour.spotsLeft) return { error: "full" };
 
-  await db.booking.create({
+  const plan = String(form.get("payPlan") ?? "");
+  const payPlan = paymentsEnabled() && (plan === "deposit" || plan === "full") ? plan : "none";
+
+  const booking = await db.booking.create({
     data: {
+      payPlan,
+      totalEur: travelers * tour.priceEur,
       tourId: tour.id,
       name,
       email,
@@ -45,5 +51,42 @@ export async function requestBooking(_prev: BookingState, form: FormData): Promi
     },
   });
 
-  redirect(`/${locale}/tours/${slug}?booked=${encodeURIComponent(email)}#book`);
+  if (payPlan === "none") {
+    redirect(`/${locale}/tours/${slug}?booked=${encodeURIComponent(email)}#book`);
+  }
+
+  let payUrl: string;
+  try {
+    payUrl = await createPayment(booking.id, payPlan);
+  } catch (e) {
+    console.error(e);
+    // No checkout was created, so drop the booking instead of holding places for nothing.
+    await db.booking.delete({ where: { id: booking.id } });
+    return { error: "payment" };
+  }
+  redirect(payUrl);
+}
+
+/** Starts a new checkout for a booking whose earlier payment failed or expired. */
+export async function retryPayment(form: FormData) {
+  const id = String(form.get("booking") ?? "");
+  const booking = await db.booking.findUnique({ where: { id }, include: { tour: true } });
+  if (!booking || booking.status === "cancelled" || booking.payPlan === "none") return;
+  if (booking.paidEur >= booking.totalEur) return;
+  const back = `/${booking.locale}/tours/${booking.tour.slug}/payment?booking=${booking.id}`;
+  if (booking.paidEur === 0 && isLocale(booking.locale)) {
+    // The hold may have expired and the places been taken by someone else.
+    const tour = await getPublishedTour(booking.tour.slug, booking.locale);
+    const stillHeld = await db.booking.count({ where: { id: booking.id, ...holdsPlaces() } });
+    if (!tour || (!stillHeld && booking.travelers > tour.spotsLeft)) redirect(`${back}&error=full`);
+  }
+  const kind = booking.paidEur > 0 ? "balance" : booking.payPlan === "full" ? "full" : "deposit";
+  let payUrl: string;
+  try {
+    payUrl = await createPayment(booking.id, kind);
+  } catch (e) {
+    console.error(e);
+    redirect(`${back}&error=payment`);
+  }
+  redirect(payUrl);
 }
